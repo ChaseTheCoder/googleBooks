@@ -20,19 +20,36 @@ const askUser = () => {
   ])
 };
 
-const bookQuery = (query) => {
+// const bookQuery = (query) => {
+//   let queryResults = [];
+//   books.search(query, function(error, results) {
+//     if ( ! error ) {
+//         for(let i = 0; i < 5; i++){
+//             let bookNode = new Book(results[i].title, results[i].authors, results[i].publisher);
+//             queryResults.push(bookNode);
+//         }
+//         console.log(queryResults)
+//     } else {
+//         console.log(error);
+//     }
+//   })
+//   addBook();
+// };
+const bookQuery = async (query) => {
   let queryResults = [];
-  books.search(query, function(error, results) {
+
+  let info = await books.search(query, function(error, results) {
     if ( ! error ) {
-        for(let i = 0; i < 5; i++){
-            let bookNode = new Book(results[i].title, results[i].authors, results[i].publisher);
-            queryResults.push(bookNode);
-        }
-        console.log(queryResults)
+      results
     } else {
-        console.log(error);
+      console.log(error);
     }
   })
+  for(let i = 0; i < 5; i++){
+      let bookNode = new Book(info[i].title, info[i].authors, info[i].publisher);
+      queryResults.push(bookNode);
+  }
+  console.log(queryResults)
   addBook();
 };
 

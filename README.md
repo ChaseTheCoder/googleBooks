@@ -24,7 +24,11 @@ Bug: index.js lines 25-36
 Expectation: run a google-books-search using 'books.search(...)',line25, then console.log results at line 29. Then run 'addBook()'.
 Result: 'addBook()' runs first, then the console.log appears.  
 Next Attempt: I need this to run synchronously because I will use the data from the Google Books to select in next prompt to save in a reading list.
+I've tried async / await in the current fuction, yet the same results occur.
 Feedback more than welcome!
+
+### Next Actions
+Once the data retrieving I will then easily be able to add one of the book queries selected to the reading list.  I would continue using recursion to in prompts (inquirer) so the user could continue with the program in the terminal.
 
 ## Contributers
 Chase Sheaff
