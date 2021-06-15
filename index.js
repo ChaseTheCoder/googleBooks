@@ -20,7 +20,6 @@ const askUser = () => {
   ])
 };
 
-
 const bookQuery = (query) => {
   let queryResults = [];
   books.search(query, function(error, results) {
