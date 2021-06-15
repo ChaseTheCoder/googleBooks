@@ -20,37 +20,24 @@ const askUser = () => {
   ])
 };
 
-let bookQueryResults = [];
 
 const bookQuery = (query) => {
+  let queryResults = [];
   books.search(query, function(error, results) {
     if ( ! error ) {
         for(let i = 0; i < 5; i++){
             let bookNode = new Book(results[i].title, results[i].authors, results[i].publisher);
-            bookQueryResults.push(bookNode);
-            // console.log(bookNode);
+            queryResults.push(bookNode);
         }
-        console.log(bookQueryResults)
+        console.log(queryResults)
     } else {
         console.log(error);
     }
   })
-  print(bookQueryResults)
+  addBook();
 };
 
-const print = (input) => {
-  let counter = 1
-  input.forEach( current => {
-    console.log('Book ' + counter + ' -----------------');
-    console.log('Title: ' + current.title);
-    console.log('Authors: ' + current.authors);
-    console.log('Publisher: ' + current.publisher);
-    console.log(' ');
-    counter++;
-  })
-};
-
-const titleSearch = [
+const searchPrompt = [
   {
       type: 'input',
       name: 'title',
@@ -59,8 +46,22 @@ const titleSearch = [
 ];
 
 const searchBooks = () => {
-  prompt(titleSearch).then(answers => {
-      bookQuery(answers.title)
+  prompt(searchPrompt).then(answer1 => {
+      bookQuery(answer1.title)
+  })
+};
+
+const addPrompt = [
+  {
+      type: 'input',
+      name: 'add',
+      message: 'Which number book do you want to add? 0,1,2,3,4 '
+  }
+];
+
+const addBook = () => {
+  prompt(addPrompt).then(answer => {
+      console.log("you chose: " + answer.number)
   })
 };
 
