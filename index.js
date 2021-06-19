@@ -23,9 +23,15 @@ const start = () => {
   askUser().then(answer => {
     if(answer.initialChoices === 'Search books') {
       searchBooks();
-    } if(answer.initialChoices === 'View Reading List') {
-      searchBooks();
-    } if(answer.initialChoices === 'Done!') {
+    } else if(answer.initialChoices === 'View Reading List') {
+      // console.log(readingList.length);
+      // if(readingList.length < 1){
+      //   console.log('You don\'t have any books yet. To add books, select Search books')
+      //   start();
+      // }
+      consoleQuery(readingList);
+      start();
+    } else if(answer.initialChoices === 'Done!') {
       console.log('Thanks for using Google Book Search.')
       console.log('Until next time. Goodbye!')
       process.exit();
@@ -54,12 +60,12 @@ const bookQuery = async (query) => {
     `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${key}&maxResults=5`
   );
   const results = await response.json();
-  const queryResults = await displayQuery(results);
+  const queryResults = await creatQueryList(results);
   console.log('\n');
   addBook(queryResults);
 };
 
-const displayQuery = async (results) => {
+const creatQueryList = async (results) => {
   let queryResults = [];
 
   for(let i = 0; i < 5; i++){
@@ -75,8 +81,8 @@ const displayQuery = async (results) => {
   return queryResults;
 }
 
-const consoleQuery = (queryResults) => {
-  queryResults.map((book, index) => {
+const consoleQuery = (input) => {
+  input.map((book, index) => {
     let bookNumber = index+1;
     console.log('\n');
     console.log('Book ' + bookNumber);
@@ -102,12 +108,12 @@ const addBook = (queryResults) => {
     } else {
       let choiceNumber = answer2.addBook - 1;
       console.log('you chose: ' + answer2.addBook);
-      readingList.push(queryResults[choiceNumber]);
+      let addList = readingList.push(queryResults[choiceNumber]);
       let index = readingList.length - 1;
       console.log('\n' + readingList[index].title + ' has been added to your Reading List ');
+      askUser();
     }
   })
-  askUser();
 };
 
 // const addPrompt = [
