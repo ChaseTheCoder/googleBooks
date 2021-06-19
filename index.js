@@ -2,6 +2,8 @@ const { prompt } = require('inquirer');
 const Book = require('./model.js');
 const fetch = require("node-fetch");
 
+let readingList = [];
+
 const askUser = () => {
   return prompt([
     {
@@ -35,13 +37,6 @@ const bookQuery = async (query) => {
   );
   const results = await response.json();
   const queryResults = await displayQuery(results);
-  queryResults.map((book, index) => {
-    console.log("\n");
-    console.log("Book " + index+1);
-    console.log("Title: " + book.title);
-    console.log("Author(s): " + book.authors);
-    console.log("Publisher: " + book.publisher);
-  })
   console.log("\n");
   addBook(queryResults);
 };
@@ -50,9 +45,29 @@ const displayQuery = async (results) => {
   let queryResults = [];
 
   for(let i = 0; i < 5; i++){
-    let bookNode = new Book(results.items[i].volumeInfo.title, results.items[i].volumeInfo.authors, results.items[i].volumeInfo.publisher);
-    queryResults.push(bookNode);
+    queryResults.push({
+      title: results.items[i].volumeInfo.title, 
+      authors: results.items[i].volumeInfo.authors, 
+      publisher: results.items[i].volumeInfo.publisher
+    });
+    // queryResults.push(bookNode);
   }
+
+  // await results.push(result => ({
+  //   title: result.items[i].volumeInfo.title,
+  //   authors: result.items[i].volumeInfo.authors,
+  //   publisher: result.items[i].volumeInfo.publisher
+  // }))
+  console.log(queryResults);
+  queryResults.map((book, index) => {
+    let bookNumber = index+1;
+    console.log("\n");
+    console.log("Book " + bookNumber);
+    console.log("Title: " + book.title);
+    console.log("Author(s): " + book.authors);
+    console.log("Publisher: " + book.publisher);
+  })
+
   return queryResults;
 }
 
@@ -70,7 +85,10 @@ const addBook = (queryResults) => {
       console.log("Please enter a valid number: 1, 2, 3, 4, 5")
       addBook(queryResults);
     } else {
-      console.log("you chose: " + answer2.addBook)
+      console.log("you chose: " + answer2.addBook);
+      readingList.push(queryResults[answer2.addBook+1]);
+      let index = readingList.length - 1;
+      console.log(readingList[index].Book.title + "added to your reading list");
     }
   })
 };
