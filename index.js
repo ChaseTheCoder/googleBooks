@@ -111,7 +111,7 @@ const addBook = (queryResults) => {
       let addList = readingList.push(queryResults[choiceNumber]);
       let index = readingList.length - 1;
       console.log('\n' + readingList[index].title + ' has been added to your Reading List ');
-      askUser();
+      start();
     }
   })
 };
