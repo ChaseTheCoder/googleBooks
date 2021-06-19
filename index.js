@@ -23,9 +23,7 @@ const searchPrompt = [
 
 const searchBooks = () => {
   prompt(searchPrompt).then(answer1 => {
-    console.log("answer1: " + answer1);
     let query = answer1.googleSearch;
-    console.log("query" + query);
     bookQuery(query)
   })
 };
@@ -37,7 +35,15 @@ const bookQuery = async (query) => {
   );
   const results = await response.json();
   const queryResults = await displayQuery(results);
-  // addBook(queryResults);
+  queryResults.map((book, index) => {
+    console.log("\n");
+    console.log("Book " + index+1);
+    console.log("Title: " + book.title);
+    console.log("Author(s): " + book.authors);
+    console.log("Publisher: " + book.publisher);
+  })
+  console.log("\n");
+  addBook(queryResults);
 };
 
 const displayQuery = async (results) => {
@@ -45,7 +51,6 @@ const displayQuery = async (results) => {
 
   for(let i = 0; i < 5; i++){
     let bookNode = new Book(results.items[i].volumeInfo.title, results.items[i].volumeInfo.authors, results.items[i].volumeInfo.publisher);
-    console.log(bookNode);
     queryResults.push(bookNode);
   }
   return queryResults;
@@ -53,15 +58,20 @@ const displayQuery = async (results) => {
 
 const addPrompt = [
   {
-      type: 'input',
-      name: 'add',
-      message: 'Which number book do you want to add? 0,1,2,3,4 '
+      type: 'number',
+      name: 'addBook',
+      message: 'Enter the Book Number You want to add to your reading list.  Enter a number 1-5.'
   }
 ];
 
-const addBook = () => {
-  prompt(addPrompt).then(answer => {
-      console.log("you chose: " + answer.number)
+const addBook = (queryResults) => {
+  prompt(addPrompt).then(answer2 => {
+    if (typeof answer2.addBook !== 'number' || answer2.addBook < 1 || answer2.addBook > 5) {
+      console.log("Please enter a valid number: 1, 2, 3, 4, 5")
+      addBook(queryResults);
+    } else {
+      console.log("you chose: " + answer2.addBook)
+    }
   })
 };
 
