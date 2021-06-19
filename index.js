@@ -1,5 +1,7 @@
 const { prompt } = require('inquirer');
 const books = require('google-books-search');
+// const Book = require('./model.js');
+const fetch = require("node-fetch");
 
 class Book {
   constructor(title, authors, publisher){
@@ -20,36 +22,15 @@ const askUser = () => {
   ])
 };
 
-// const bookQuery = (query) => {
-//   let queryResults = [];
-//   books.search(query, function(error, results) {
-//     if ( ! error ) {
-//         for(let i = 0; i < 5; i++){
-//             let bookNode = new Book(results[i].title, results[i].authors, results[i].publisher);
-//             queryResults.push(bookNode);
-//         }
-//         console.log(queryResults)
-//     } else {
-//         console.log(error);
-//     }
-//   })
-//   addBook();
-// };
 const bookQuery = async (query) => {
   let queryResults = [];
 
-  let info = await books.search(query, function(error, results) {
-    if ( ! error ) {
-      results
-    } else {
-      console.log(error);
-    }
-  })
-  for(let i = 0; i < 5; i++){
-      let bookNode = new Book(info[i].title, info[i].authors, info[i].publisher);
-      queryResults.push(bookNode);
-  }
-  console.log(queryResults)
+  const response = await fetch(
+    `https://www.googleapis.com/books/v1/volumes?q=${query}`
+  );
+  const results = await response.json();
+
+  console.log(results)
   addBook();
 };
 
@@ -63,7 +44,7 @@ const searchPrompt = [
 
 const searchBooks = () => {
   prompt(searchPrompt).then(answer1 => {
-      bookQuery(answer1.title)
+      bookQuery(answer1)
   })
 };
 
@@ -92,3 +73,5 @@ const start = () => {
 }
 
 start();
+
+// module.exports = index;
