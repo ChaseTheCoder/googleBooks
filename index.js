@@ -24,13 +24,17 @@ const start = () => {
     if(answer.initialChoices === 'Search books') {
       searchBooks();
     } else if(answer.initialChoices === 'View Reading List') {
-      // console.log(readingList.length);
-      // if(readingList.length < 1){
-      //   console.log('You don\'t have any books yet. To add books, select Search books')
-      //   start();
-      // }
-      consoleQuery(readingList);
-      start();
+      if(readingList.length < 1){
+        console.log('\n')
+        console.log('You don\'t have any books yet.')
+        console.log('To add books, select Search books', '\n')
+        start();
+      } else { 
+        console.log('\n')
+        console.log('--------- Your Reading List --------- ')
+        consoleQuery(readingList);
+        start();
+      }
     } else if(answer.initialChoices === 'Done!') {
       console.log('Thanks for using Google Book Search.')
       console.log('Until next time. Goodbye!')
@@ -58,10 +62,12 @@ const bookQuery = async (query) => {
   key = 'AIzaSyDevB-OBasdn3STsB7imSEgcDclGwke3-w';
   const response = await fetch(
     `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${key}&maxResults=5`
+  ).catch( error => {
+    console.log(error).then(searchBooks());
+  }
   );
   const results = await response.json();
   const queryResults = await creatQueryList(results);
-  console.log('\n');
   addBook(queryResults);
 };
 
@@ -90,40 +96,33 @@ const consoleQuery = (input) => {
     console.log('Author(s): ' + book.authors);
     console.log('Publisher: ' + book.publisher);
   })
+  console.log('\n');
 }
 
 const addPrompt = [
   {
       type: 'number',
       name: 'addBook',
-      message: 'Enter the Book Number You want to add to your reading list.  Enter a number 1-5.'
+      message: 'Enter the Book Number You want to add to your reading list.  Enter a number 1-5. If you don\'t want any enter: \"no\".'
   }
 ];
 
 const addBook = (queryResults) => {
   prompt(addPrompt).then(answer2 => {
-    if (typeof answer2.addBook !== 'number' || answer2.addBook < 1 || answer2.addBook > 5) {
+    if(typeof answer2.addBook !== 'number' || answer2.addBook < 1 || answer2.addBook > 5) {
       console.log('Please enter a valid number: 1, 2, 3, 4, 5')
       addBook(queryResults);
     } else {
       let choiceNumber = answer2.addBook - 1;
-      console.log('you chose: ' + answer2.addBook);
-      let addList = readingList.push(queryResults[choiceNumber]);
+      console.log('\n');
+      console.log('You chose: ' + answer2.addBook);
+      readingList.push(queryResults[choiceNumber]);
       let index = readingList.length - 1;
-      console.log('\n' + readingList[index].title + ' has been added to your Reading List ');
+      console.log(readingList[index].title + ' has been added to your Reading List ');
+      console.log('\n');
       start();
     }
   })
 };
 
-// const addPrompt = [
-//   {
-//       type: 'number',
-//       name: 'addBook',
-//       message: 'Enter the Book Number You want to add to your reading list.  Enter a number 1-5.'
-//   }
-// ];
-
 welcome();
-
-// module.exports = index;
