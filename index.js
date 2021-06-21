@@ -8,15 +8,17 @@ const welcome = () => {
   start();
 }
 
+const initialChoices = [
+  {
+    type: 'list',
+    name: 'initialChoices',
+    message: 'Google Book Search: Select a Choice',
+    choices: ['Search books', 'View Reading List', 'Done!']
+  }
+];
+
 const askUser = () => {
-  return prompt([
-    {
-      type: 'list',
-      name: 'initialChoices',
-      message: 'Google Book Search: Select a Choice',
-      choices: ['Search books', 'View Reading List', 'Done!']
-    }
-  ])
+  return prompt(initialChoices);
 };
 
 const start = () => {
@@ -63,10 +65,11 @@ const bookQuery = async (query) => {
   const response = await fetch(
     `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${key}&maxResults=5`
   ).catch( error => {
-    console.log(error).then(searchBooks());
+    console.log(error).then(searchBooks()); // attempt to search again if no result
   }
   );
   const results = await response.json();
+  console.log(results);
   const queryResults = await creatQueryList(results);
   addBook(queryResults);
 };
@@ -126,3 +129,5 @@ const addBook = (queryResults) => {
 };
 
 welcome();
+
+exports.bookQuery = bookQuery;
