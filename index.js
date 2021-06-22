@@ -84,8 +84,7 @@ const creatQueryList = async (results) => {
     });
   }
   console.log(queryResults);
-  consoleQuery(queryResults);
-
+  
   return queryResults;
 }
 

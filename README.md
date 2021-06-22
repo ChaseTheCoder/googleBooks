@@ -1,8 +1,8 @@
 # Command Line Google Book Search
 
-Command line application using JavaScript that uses Google Book API to search for books and construct a reading list of your favorites.
+Command line application using JavaScript and Node.js that uses Google Book API to search for books and locally save a reading list of your favorites.
 
-## Installation
+## Installation and Use
 
 Clone and run npm install to locally run and save reading list.
 
@@ -11,24 +11,33 @@ Clone and run npm install to locally run and save reading list.
 npm install
 ```
 
-## Libraries
+To use, run the following in the terminal.
 
-* 'google-books-search' A simple Node.js client for the Google Books API.
+```bash
+node index
+```
+
+## Libraries & Frameworks
+
 * 'inquirer' A collection of common interactive command line user interfaces.
+* 'node-fetch' a lightweight module that brings window.fetch to node.js
+* 'jest' a JavaScript testing framework
 
 ## Project Status
 
-Currently able to retrieve data through a search using google-boooks-search.
+'node index' works and is user friendly.  Can search Google Books API, see 5 results, and save to a Reading List locally.
 
-Bug: index.js lines 25-36
-Expectation: run a google-books-search using 'books.search(...)',line25, then console.log results at line 29. Then run 'addBook()'.
-Result: 'addBook()' runs first, then the console.log appears.  
-Next Attempt: I need this to run synchronously because I will use the data from the Google Books to select in next prompt to save in a reading list.
-I've tried async / await in the current fuction, yet the same results occur.
-Feedback more than welcome!
+Jest Testing set up.  Having issues with testing data. Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.  Will research this to be able to utilize testData.js to run multitple tests quickly oppose to using the api.
 
 ### Next Actions
-Once the data retrieving I will then easily be able to add one of the book queries selected to the reading list.  I would continue using recursion to in prompts (inquirer) so the user could continue with the program in the terminal.
+
+Will research Jest error to be able to utilize testData.js to run multitple tests quickly oppose to using the api.
+
+Build a catch for Google Books API request with no results.  Causes terminal to end session.
+
+Clone this repo to add React front end and make small app to show off my front-end and UI/UX skills.
+
+Refactor code to be 'clean code.'  Been watching workshops by Uncle Bob (Robert Cecil Martin) to develop my clean coding skills.
 
 ## Contributers
 Chase Sheaff
