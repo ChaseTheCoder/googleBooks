@@ -63,13 +63,12 @@ const searchBooks = () => {
 const bookQuery = async (query) => {
   key = 'AIzaSyDevB-OBasdn3STsB7imSEgcDclGwke3-w';
   const response = await fetch(
-    `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${key}&maxResults=5`
+    `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=5&key=${key}`
   ).catch( error => {
     console.log(error).then(searchBooks()); // attempt to search again if no result
   }
   );
   const results = await response.json();
-  console.log(results);
   const queryResults = await creatQueryList(results);
   addBook(queryResults);
 };
@@ -84,7 +83,7 @@ const creatQueryList = async (results) => {
       publisher: results.items[i].volumeInfo.publisher
     });
   }
-
+  console.log(queryResults);
   consoleQuery(queryResults);
 
   return queryResults;
@@ -131,3 +130,5 @@ const addBook = (queryResults) => {
 welcome();
 
 exports.bookQuery = bookQuery;
+exports.askUser = askUser;
+exports.creatQueryList = creatQueryList;
